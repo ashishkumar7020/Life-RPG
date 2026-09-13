@@ -246,23 +246,28 @@ small,.eyebrow,.rpg-button,.filter-row,.count-label,.outlined-label,.quest-value
 /* Desktop rails remain complete and stationary; only the center column scrolls. */
 @media(min-width:1001px) {
   .realm-nav { top:auto; overflow:visible; align-self:stretch; }
-  .right-column { align-content:start; gap:10px; }
+  .right-column { align-content:start; gap:2px; }
+  .right-column .identity-panel { overflow:visible; }
   .right-column .identity-art { height:100px; }
-  .right-column .identity-copy { margin-top:-10px; padding:0 14px 10px; }
+  .right-column .identity-copy { margin-top:-10px; padding:0 10px 6px; }
   .right-column .identity-copy h2 { font-size:21px; }
-  .right-column .path-label { margin:9px 0 6px; }
-  .right-column .identity-copy>small { margin-top:5px; }
-  .right-column .identity-copy .text-link { min-height:28px; margin-top:4px; }
+  .right-column .identity-copy h2 { margin:1px 0; }
+  .right-column .path-label { margin:4px 0 3px; }
+  .right-column .identity-copy>small { margin-top:3px; }
+  .right-column .identity-copy .text-link { min-height:24px; margin-top:2px; }
   .right-column .attribute-panel,
   .right-column .treasury-panel,
-  .right-column .recent-panel { padding:11px 14px; }
+  .right-column .recent-panel { padding:8px 10px; }
   .right-column .attribute-panel h2,
   .right-column .recent-panel h2 { font-size:18px; }
-  .right-column .attribute { gap:7px; margin:5px 0; }
+  .right-column .attribute-panel .section-heading,
+  .right-column .recent-panel .section-heading { margin-bottom:4px; }
+  .right-column .attribute { gap:7px; margin:1px 0; }
   .right-column .attribute>.sheet-region { width:22px; height:24px; }
-  .right-column .attribute div>span { margin-bottom:3px; }
+  .right-column .attribute div>span { margin-bottom:1px; }
   .right-column .treasury-panel .chest { width:42px; }
-  .right-column .treasury-panel h2 { font-size:20px; margin:4px 0 8px; }
-  .right-column .treasury-panel .rpg-button { min-height:29px; padding:6px 9px; }
-  .right-column .recent-panel>p { margin-top:7px; }
+  .right-column .treasury-panel h2 { font-size:20px; margin:0 0 4px; }
+  .right-column .treasury-panel .rpg-button { min-height:27px; padding:5px 8px; }
+  .right-column .recent-panel>p { margin-top:4px; }
+  .right-column .recent-gain { padding:3px 0; }
 }
