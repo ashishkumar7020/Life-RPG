@@ -1,0 +1,11 @@
+import type {CharacterClass} from '../supabase/database.types';
+import type {Cosmetic} from '../engagement/types';
+export type Privacy={profile_visibility:'public'|'friends'|'private';discoverable:boolean;show_progress:boolean;show_attributes:boolean;show_streak:boolean;show_achievements:boolean;show_cosmetics:boolean;leaderboard_opt_in:boolean};
+export type PublicProfile={id:string;name:string;class:CharacterClass;own:boolean;level?:number;xp?:number;verified_xp?:number;progress?:{current_xp:number;next_level_xp:number;progress_percent:number};attributes?:Record<string,number>;streak?:number;achievements?:{id:string;name:string;art_index:number;unlocked_at:string;featured_position:number|null}[];cosmetics?:Pick<Cosmetic,'id'|'name'|'slot'|'art_index'|'rarity'>[]};
+export type Relationship={id:string;target:string;name:string;visible:boolean;status:'pending'|'accepted'|'rejected'|'cancelled'|'removed';incoming:boolean;updated_at:string};
+export type Hall={user_id:string;relationships:Relationship[];results:{id:string;name:string;class:CharacterClass}[]};
+export const metrics=['weekly_verified_xp','overall_verified_xp','streak','strength','intelligence','focus','discipline'] as const;
+export type Metric=typeof metrics[number];
+export type Ranking={id:string;name:string;class:CharacterClass;value:number;rank:number};
+export type Board={metric:Metric;week_start:string;week_end:string;total:number;rows:Ranking[];me:Ranking|null};
+export type Result<T>={data?:T;error?:string;message?:string};

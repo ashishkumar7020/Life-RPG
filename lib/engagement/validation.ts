@@ -1,0 +1,5 @@
+import {z} from 'zod';
+export const evidenceSchema=z.object({session:z.string().uuid(),request:z.string().uuid(),kind:z.enum(['heartbeat','location','permission','camera','checkpoint','activity','reflection','pause','resume','exit','final']),data:z.object({visible:z.boolean().optional(),latitude:z.number().finite().min(-90).max(90).optional(),longitude:z.number().finite().min(-180).max(180).optional(),accuracy:z.number().finite().min(0).max(10000).optional(),state:z.enum(['denied','unavailable','inaccurate','local_preview']).optional(),challenge:z.string().uuid().optional(),confirmed:z.boolean().optional(),reflection:z.string().trim().min(20).max(1000).optional()}).strict()}).strict();
+export const gymSchema=z.object({name:z.string().trim().min(2).max(80),latitude:z.number().finite().min(-90).max(90),longitude:z.number().finite().min(-180).max(180)}).strict();
+export const sessionSchema=z.object({quest:z.string().uuid(),gym:z.string().uuid().nullable(),strong:z.boolean()}).strict();
+export const cosmeticSchema=z.object({item:z.string().min(1).max(80),action:z.enum(['buy','equip','unequip'])}).strict();

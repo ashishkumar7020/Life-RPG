@@ -1,0 +1,10 @@
+-- Read-only Step 5 deployment audit. It returns one JSON result.
+select jsonb_build_object(
+ 'tables',(select jsonb_agg(jsonb_build_object('table',c.relname,'rls',c.relrowsecurity) order by c.relname) from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname='public' and c.relname in ('friendships','featured_achievements','verified_progress')),
+ 'policies',(select jsonb_agg(jsonb_build_object('table',tablename,'name',policyname,'command',cmd,'using',qual,'check',with_check) order by tablename,policyname) from pg_policies where schemaname='public' and tablename in ('friendships','featured_achievements','verified_progress')),
+ 'grants',(select jsonb_agg(jsonb_build_object('role',grantee,'table',table_name,'privilege',privilege_type) order by table_name,grantee) from information_schema.table_privileges where table_schema='public' and table_name in ('friendships','featured_achievements','verified_progress') and grantee in ('anon','authenticated','PUBLIC')),
+ 'functions',(select jsonb_agg(jsonb_build_object('schema',n.nspname,'name',p.proname,'security_definer',p.prosecdef,'search_path',p.proconfig,'anon_execute',has_function_privilege('anon',p.oid,'execute'),'authenticated_execute',has_function_privilege('authenticated',p.oid,'execute')) order by n.nspname,p.proname) from pg_proc p join pg_namespace n on n.oid=p.pronamespace where (n.nspname='public' and p.proname in ('friend_action','save_social_profile','rpg_profile','social_hall','rpg_leaderboard')) or (n.nspname='private' and p.proname in ('social_visible','record_verified_progress'))),
+ 'duplicate_relationships',(select count(*) from (select user_low,user_high from public.friendships group by user_low,user_high having count(*)>1) x),
+ 'duplicate_feature_slots',(select count(*) from (select user_id,position from public.featured_achievements group by user_id,position having count(*)>1) x),
+ 'verified_ledger_mismatches',(select count(*) from public.verified_progress v left join public.quest_completions c on c.id=v.completion_id where c.id is null or c.user_id<>v.user_id or c.xp<>v.xp)
+) as step_5_verification;

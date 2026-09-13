@@ -1,0 +1,11 @@
+export type VerificationMethod='gym'|'home_workout'|'running'|'coding'|'studying'|'reading'|'focus';
+export type VerificationSession={id:string;user_id:string;quest_id:string;progress_id:string;method:VerificationMethod;verification_level:'honor'|'focus'|'verified'|'strong_verified';status:'pending'|'passed'|'failed';confidence:number;reasons:string[];gym_id:string|null;required_seconds:number;active_seconds:number;dwell_seconds:number;inside_area:boolean;arrival_seen:boolean;travel_seen:boolean;paused:boolean;foreground:boolean;last_seen_at:string|null;started_at:string;finished_at:string|null;challenge:string;checkpoint_due:string;checkpoint_expires:string;checkpoint_passed:boolean;activity_confirmed:boolean;reflection_received:boolean;camera_state:string;liveness_state:string};
+export type GymLocation={id:string;user_id:string;name:string;latitude:number;longitude:number;radius_m:number;created_at:string};
+export type Achievement={id:string;title:string;description:string;art_index:number;metric:string;target:number};
+export type Unlock={user_id:string;achievement_id:string;unlocked_at:string};
+export type Cosmetic={id:string;name:string;slot:'banners'|'frames'|'titles'|'auras'|'themes'|'badges'|'miscellaneous';art_index:number;price:number;min_level:number;required_achievement:string|null;rarity:string};
+export type InventoryItem={user_id:string;item_id:string;slot:string;equipped:boolean;acquired_at:string};
+export type Purchase={id:string;user_id:string;item_id:string;price:number;created_at:string};
+export type EngagementData={ready:boolean;error?:string;gyms:GymLocation[];sessions:VerificationSession[];achievements:Achievement[];unlocks:Unlock[];catalog:Cosmetic[];inventory:InventoryItem[];purchases:Purchase[]};
+export type EvidenceInput={visible?:boolean;latitude?:number;longitude?:number;accuracy?:number;state?:'denied'|'unavailable'|'inaccurate'|'local_preview';challenge?:string;confirmed?:boolean;reflection?:string};
+export type EngagementResult={error?:string;message?:string;id?:string;data?:{status?:string;confidence?:number;reasons?:string[];reward?:{xp?:number;credits?:number;level_up?:boolean;level?:number}|null}};
