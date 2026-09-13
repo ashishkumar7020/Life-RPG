@@ -245,7 +245,7 @@ small,.eyebrow,.rpg-button,.filter-row,.count-label,.outlined-label,.quest-value
 
 /* Desktop rails remain complete and stationary; only the center column scrolls. */
 @media(min-width:1001px) {
-  .realm-nav { overflow:visible; align-self:stretch; }
+  .realm-nav { top:auto; overflow:visible; align-self:stretch; }
   .right-column { align-content:start; gap:10px; }
   .right-column .identity-art { height:100px; }
   .right-column .identity-copy { margin-top:-10px; padding:0 14px 10px; }
