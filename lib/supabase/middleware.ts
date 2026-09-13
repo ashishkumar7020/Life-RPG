@@ -8,20 +8,26 @@ export async function updateSession(request: NextRequest) {
   response.headers.set('Cache-Control', 'private, no-store');
   const config = getSupabaseConfig();
   if (!config) return response;
-  const supabase = createServerClient<Database>(config.url, config.key, {
-    cookies: {
-      getAll: () => request.cookies.getAll(),
-      setAll(values) {
-        values.forEach(({ name, value }) => request.cookies.set(name, value));
-        response = NextResponse.next({ request });
-        values.forEach(({ name, value, options }) => response.cookies.set(name, value, options));
-        response.headers.set('Cache-Control', 'private, no-store');
+  try {
+    const supabase = createServerClient<Database>(config.url, config.key, {
+      cookies: {
+        getAll: () => request.cookies.getAll(),
+        setAll(values) {
+          values.forEach(({ name, value }) => request.cookies.set(name, value));
+          response = NextResponse.next({ request });
+          values.forEach(({ name, value, options }) => response.cookies.set(name, value, options));
+          response.headers.set('Cache-Control', 'private, no-store');
+        },
       },
-    },
-  });
-  // Server-confirmed identity; never authorize using an unverified getSession().
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user && (request.nextUrl.pathname === '/' || request.nextUrl.pathname.startsWith('/onboarding'))) {
+    });
+    // Server-confirmed identity; never authorize using an unverified getSession().
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user || !(request.nextUrl.pathname === '/' || request.nextUrl.pathname.startsWith('/onboarding'))) return response;
+  } catch {
+    // Edge middleware must not turn a transient Supabase or malformed-cookie
+    // failure into a deployment-wide 500. Protected pages still fail closed below.
+  }
+  if (request.nextUrl.pathname === '/' || request.nextUrl.pathname.startsWith('/onboarding')) {
     const redirect = NextResponse.redirect(new URL('/login', request.url));
     response.cookies.getAll().forEach(cookie => redirect.cookies.set(cookie));
     redirect.headers.set('Cache-Control', 'private, no-store');
